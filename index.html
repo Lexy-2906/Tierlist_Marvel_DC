@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tier List Fun Marvel & DC - Live TikTok</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0f1d, #1a0510);
+            color: #ffffff;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #ffcc00;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            text-align: center;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+        }
+        .subtitle {
+            color: #00ccff;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .tier-container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .tier-row {
+            display: flex;
+            min-height: 65px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #333;
+        }
+        .tier-label {
+            width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000;
+        }
+        .tier-s { background-color: #ff7f7f; }
+        .tier-a { background-color: #ffbf7f; }
+        .tier-b { background-color: #ffdf7f; }
+        .tier-c { background-color: #ffff7f; }
+        .tier-d { background-color: #7fff7f; }
+
+        .tier-dropzone {
+            flex-grow: 1;
+            background: rgba(20, 20, 30, 0.8);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 8px;
+            align-items: center;
+            min-height: 50px;
+            transition: background 0.2s;
+        }
+        .tier-dropzone.drag-over {
+            background: rgba(0, 204, 255, 0.2);
+        }
+        .pool-container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(15, 15, 25, 0.9);
+            border: 2px dashed #555;
+            border-radius: 10px;
+            padding: 10px;
+            min-height: 100px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+        }
+        .pool-title {
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .character-card {
+            padding: 6px 10px;
+            background-color: #222a38;
+            color: white;
+            border: 1px solid #445566;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: grab;
+            user-select: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .character-card:active {
+            cursor: grabbing;
+        }
+        .character-card.marvel {
+            border-left: 4px solid #ff3333;
+        }
+        .character-card.dc {
+            border-left: 4px solid #3366ff;
+        }
+        /* Animation fun à l'atterrissage */
+        @keyframes popIn {
+            0% { transform: scale(0.7); opacity: 0; }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .character-card.dropped {
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.6);
+        }
+        .controls {
+            margin-top: 10px;
+        }
+        .btn-reset {
+            padding: 8px 15px;
+            background-color: #333;
+            color: white;
+            border: 1px solid #666;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-reset:hover {
+            background-color: #511;
+            border-color: #f55;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Tier List Fun — Marvel vs DC</h1>
+    <div class="subtitle">Glisse les personnages (Effets visuels et sonores intégrés !)</div>
+
+    <div class="tier-container">
+        <div class="tier-row">
+            <div class="tier-label tier-s">S</div>
+            <div class="tier-dropzone" ondragover="allowDrop(event)" ondragenter="highlight(event)" ondragleave="unhighlight(event)" ondrop="drop(event)"></div>
+        </div>
+        <div class="tier-row">
+            <div class="tier-label tier-a">A</div>
+            <div class="tier-dropzone" ondragover="allowDrop(event)" ondragenter="highlight(event)" ondragleave="unhighlight(event)" ondrop="drop(event)"></div>
+        </div>
+        <div class="tier-row">
+            <div class="tier-label tier-b">B</div>
+            <div class="tier-dropzone" ondragover="allowDrop(event)" ondragenter="highlight(event)" ondragleave="unhighlight(event)" ondrop="drop(event)"></div>
+        </div>
+        <div class="tier-row">
+            <div class="tier-label tier-c">C</div>
+            <div class="tier-dropzone" ondragover="allowDrop(event)" ondragenter="highlight(event)" ondragleave="unhighlight(event)" ondrop="drop(event)"></div>
+        </div>
+        <div class="tier-row">
+            <div class="tier-label tier-d">D</div>
+            <div class="tier-dropzone" ondragover="allowDrop(event)" ondragenter="highlight(event)" ondragleave="unhighlight(event)" ondrop="drop(event)"></div>
+        </div>
+    </div>
+
+    <div class="pool-container" id="characterPool" ondragover="allowDrop(event)" ondragenter="highlight(event)" ondragleave="unhighlight(event)" ondrop="drop(event)">
+        <div class="pool-title">Personnages à classer</div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-reset" onclick="resetTierList()">Réinitialiser</button>
+    </div>
+
+    <script>
+        const characters = [
+            { name: "Iron Man", universe: "marvel" },
+            { name: "Spider-Man", universe: "marvel" },
+            { name: "Captain America", universe: "marvel" },
+            { name: "Thor", universe: "marvel" },
+            { name: "Hulk", universe: "marvel" },
+            { name: "Black Widow", universe: "marvel" },
+            { name: "Doctor Strange", universe: "marvel" },
+            { name: "Black Panther", universe: "marvel" },
+            { name: "Wolverine", universe: "marvel" },
+            { name: "Deadpool", universe: "marvel" },
+            { name: "Thanos", universe: "marvel" },
+            { name: "Loki", universe: "marvel" },
+            { name: "Scarlet Witch", universe: "marvel" },
+            { name: "Captain Marvel", universe: "marvel" },
+            { name: "Daredevil", universe: "marvel" },
+            { name: "Batman", universe: "dc" },
+            { name: "Superman", universe: "dc" },
+            { name: "Wonder Woman", universe: "dc" },
+            { name: "The Flash", universe: "dc" },
+            { name: "Aquaman", universe: "dc" },
+            { name: "Green Lantern", universe: "dc" },
+            { name: "John Constantine", universe: "dc" },
+            { name: "Le Joker", universe: "dc" },
+            { name: "Harley Quinn", universe: "dc" },
+            { name: "Catwoman", universe: "dc" },
+            { name: "Deathstroke", universe: "dc" },
+            { name: "Lex Luthor", universe: "dc" },
+            { name: "Cyborg", universe: "dc" },
+            { name: "Green Arrow", universe: "dc" },
+            { name: "Supergirl", universe: "dc" }
+        ];
+
+        // Générateur de son Web Audio API (aucun fichier externe requis)
+        function playPopSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+                
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            } catch (e) {
+                // Ignore si le navigateur bloque l'audio sans interaction préalable
+            }
+        }
+
+        function initPool() {
+            const pool = document.getElementById('characterPool');
+            pool.innerHTML = '<div class="pool-title">Personnages à classer</div>';
+            
+            characters.forEach((char, index) => {
+                let card = document.createElement('div');
+                card.className = `character-card ${char.universe}`;
+                card.draggable = true;
+                card.id = `char-${index}`;
+                card.textContent = char.name;
+                card.ondragstart = (e) => {
+                    e.dataTransfer.setData('text', e.target.id);
+                };
+                pool.appendChild(card);
+            });
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function highlight(ev) {
+            let zone = ev.target.closest('.tier-dropzone') || ev.target.closest('.pool-container');
+            if (zone) zone.classList.add('drag-over');
+        }
+
+        function unhighlight(ev) {
+            let zone = ev.target.closest('.tier-dropzone') || ev.target.closest('.pool-container');
+            if (zone) zone.classList.remove('drag-over');
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData('text');
+            const card = document.getElementById(data);
+            
+            let target = ev.target;
+            if (!target.classList.contains('tier-dropzone') && !target.classList.contains('pool-container')) {
+                target = target.closest('.tier-dropzone') || target.closest('.pool-container');
+            }
+            
+            // Retirer la classe de surbrillance
+            document.querySelectorAll('.tier-dropzone, .pool-container').forEach(el => el.classList.remove('drag-over'));
+
+            if (target) {
+                target.appendChild(card);
+                
+                // Déclencher l'animation pop et le son
+                card.classList.remove('dropped');
+                void card.offsetWidth; // Force le reset de l'animation CSS
+                card.classList.add('dropped');
+                playPopSound();
+            }
+        }
+
+        function resetTierList() {
+            initPool();
+        }
+
+        window.onload = initPool;
+    </script>
+</body>
+</html>
